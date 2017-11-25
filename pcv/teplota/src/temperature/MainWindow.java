@@ -87,6 +87,11 @@ public class MainWindow extends javax.swing.JFrame {
                 closeMouseClicked(evt);
             }
         });
+        close.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeActionPerformed(evt);
+            }
+        });
 
         info.setBackground(new java.awt.Color(153, 255, 255));
         info.setText("Info");
@@ -158,7 +163,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_inputCKeyReleased
 
     private void closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeMouseClicked
-        System.exit(0);
+
     }//GEN-LAST:event_closeMouseClicked
 
     private void infoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoMouseClicked
@@ -168,6 +173,10 @@ public class MainWindow extends javax.swing.JFrame {
     private void inputFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputFActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_inputFActionPerformed
+
+    private void closeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_closeActionPerformed
 
     /**
      * @param args the command line arguments
