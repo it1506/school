@@ -70,7 +70,7 @@ public class Window extends javax.swing.JFrame {
         });
         popupMenu.add(editMenu);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         heading.setText("MY CARS");
 

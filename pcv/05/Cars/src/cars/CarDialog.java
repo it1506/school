@@ -78,7 +78,7 @@ public class CarDialog extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
         stornoButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         heading.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         heading.setText("Details");
@@ -151,9 +151,8 @@ public class CarDialog extends javax.swing.JDialog {
                                 .addComponent(speedValue)
                                 .addGap(18, 18, 18)
                                 .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(yearSpinner, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(nameTextField, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)))))
+                            .addComponent(yearSpinner)
+                            .addComponent(nameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
 
