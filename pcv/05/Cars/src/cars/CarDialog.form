@@ -41,27 +41,34 @@
                           <Component id="okButton" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="stornoButton" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Component id="smallButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="mediumButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="bigButton" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="consumptionSpinner" linkSize="1" min="-2" pref="76" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="speedValue" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="speedSlider" pref="0" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="kmphLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="17" max="32767" attributes="0"/>
+                              <Component id="speedSlider" min="-2" pref="113" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="yearSpinner" alignment="0" max="32767" attributes="0"/>
-                          <Component id="nameTextField" linkSize="1" alignment="0" pref="88" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="stornoButton" min="-2" max="-2" attributes="0"/>
+                                  <Component id="nameTextField" linkSize="1" alignment="0" pref="88" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="yearSpinner" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="sizeComboBox" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="consumptionSpinner" linkSize="1" alignment="0" pref="76" max="32767" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="38" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -83,24 +90,24 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="sizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="smallButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="mediumButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="bigButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sizeComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="consumptionLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="consumptionSpinner" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="speedLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="speedValue" linkSize="3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="kmphLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Component id="speedSlider" linkSize="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="49" max="32767" attributes="0"/>
+              <EmptySpace pref="46" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="okButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="stornoButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -116,9 +123,9 @@
     <Component class="javax.swing.JLabel" name="heading">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Arial" size="14" style="1"/>
+          <Font name="Arial" size="12" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Details"/>
+        <Property name="text" type="java.lang.String" value="DETAILS"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="nameLabel">
@@ -136,37 +143,15 @@
         <Property name="text" type="java.lang.String" value="Size"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="smallButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="sizeButtonGroup"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Small"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="mediumButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="sizeButtonGroup"/>
-        </Property>
-        <Property name="selected" type="boolean" value="true"/>
-        <Property name="text" type="java.lang.String" value="Medium"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="bigButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="sizeButtonGroup"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="Big"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="consumptionLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Consumption"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="consumptionSpinner">
+      <Properties>
+        <Property name="opaque" type="boolean" value="false"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="speedLabel">
       <Properties>
@@ -180,8 +165,13 @@
     </Component>
     <Component class="javax.swing.JSlider" name="speedSlider">
       <Properties>
+        <Property name="maximum" type="int" value="450"/>
         <Property name="minimum" type="int" value="50"/>
+        <Property name="value" type="int" value="200"/>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="speedSliderStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="yearSpinner">
     </Component>
@@ -200,6 +190,29 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="stornoButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="sizeComboBox">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="new DefaultComboBoxModel(Car.Size.values())" type="code"/>
+        </Property>
+        <Property name="selectedItem" type="java.lang.Object" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="Car.Size.Medium" type="code"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sizeComboBoxActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="kmphLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="km/h"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="l / 100 km"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

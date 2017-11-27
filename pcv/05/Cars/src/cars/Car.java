@@ -16,7 +16,7 @@ public class Car {
     private String name;
     private int year = 2010;
     private Size size = Size.Medium;
-    private float consumption = (float) 6.00;
+    private int consumption = 6;
     private int speed = 220;
     
     public Car(String name){
@@ -56,11 +56,11 @@ public class Car {
         this.size = size;
     }
     
-    public float getConsumption() {
+    public int getConsumption() {
         return consumption;
     }
 
-    public void setConsumption(float consumption) {
+    public void setConsumption(int consumption) {
         this.consumption = consumption;
     }
     
@@ -74,7 +74,7 @@ public class Car {
     }
     
     public String toString(){
-        String output = this.name + " [Car]\n";
+        String output = this.name;
         return output;
     }
 }

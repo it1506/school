@@ -10,7 +10,9 @@ package cars;
  * @author Dan
  */
 public class Sedan extends Car {
-    private float consumption = (float) 6.00;
+    private int consumption = 5;
+    private int speed = 240;
+    private Size size = Size.Medium;
     
     public Sedan(String name, int year, Size size) {
         super(name, year, size);
@@ -20,12 +22,29 @@ public class Sedan extends Car {
         super(name);
     }
     
-    public float getConsumption() {
+    public int getConsumption() {
         return consumption;
     }
 
-    public void setConsumption(float consumption) {
+    public void setConsumption(int consumption) {
         this.consumption = consumption;
+    }
+    
+    public int getSpeed(){
+        return this.speed;
+    }
+    
+    public void setSpeed(int speed){
+        if(speed > 0 && speed < 450)
+            this.speed = speed;       
+    }
+    
+    public Size getSize() {
+        return size;
+    }
+
+    public void setSize(Size size) {
+        this.size = size;
     }
     
     public String toString(){

@@ -6,6 +6,7 @@
 package cars;
 
 import cars.Car.Size;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 
 /**
@@ -23,14 +24,9 @@ public class CarDialog extends javax.swing.JDialog {
         this.car = car;
         nameTextField.setText(car.getName());
         yearSpinner.setValue(car.getYear());
-        if(car.getSize() == Size.Small){
-            smallButton.setSelected(true);
-        }else if(car.getSize() == Size.Medium){
-            mediumButton.setSelected(true);
-        }
-        else{
-            bigButton.setSelected(true);
-        }
+        sizeComboBox.removeAllItems();
+        sizeComboBox.setModel(new DefaultComboBoxModel(Car.Size.values()));
+        sizeComboBox.setSelectedItem(car.getSize());
         consumptionSpinner.setValue(car.getConsumption());
         speedSlider.setValue((int)(car.getSpeed()));
     }
@@ -38,6 +34,7 @@ public class CarDialog extends javax.swing.JDialog {
     public Car getCar(){
         this.car.setName(nameTextField.getText());
         this.car.setYear((int)yearSpinner.getValue());
+        this.car.setSize((Car.Size) sizeComboBox.getSelectedItem());
         this.car.setConsumption((int)consumptionSpinner.getValue());
         this.car.setSpeed((int)speedSlider.getValue());
         return this.car;
@@ -66,9 +63,6 @@ public class CarDialog extends javax.swing.JDialog {
         nameLabel = new javax.swing.JLabel();
         yearLabel = new javax.swing.JLabel();
         sizeLabel = new javax.swing.JLabel();
-        smallButton = new javax.swing.JRadioButton();
-        mediumButton = new javax.swing.JRadioButton();
-        bigButton = new javax.swing.JRadioButton();
         consumptionLabel = new javax.swing.JLabel();
         consumptionSpinner = new javax.swing.JSpinner();
         speedLabel = new javax.swing.JLabel();
@@ -77,11 +71,14 @@ public class CarDialog extends javax.swing.JDialog {
         yearSpinner = new javax.swing.JSpinner();
         okButton = new javax.swing.JButton();
         stornoButton = new javax.swing.JButton();
+        sizeComboBox = new javax.swing.JComboBox();
+        kmphLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        heading.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        heading.setText("Details");
+        heading.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        heading.setText("DETAILS");
 
         nameLabel.setText("Name");
 
@@ -89,23 +86,22 @@ public class CarDialog extends javax.swing.JDialog {
 
         sizeLabel.setText("Size");
 
-        sizeButtonGroup.add(smallButton);
-        smallButton.setText("Small");
-
-        sizeButtonGroup.add(mediumButton);
-        mediumButton.setSelected(true);
-        mediumButton.setText("Medium");
-
-        sizeButtonGroup.add(bigButton);
-        bigButton.setText("Big");
-
         consumptionLabel.setText("Consumption");
+
+        consumptionSpinner.setOpaque(false);
 
         speedLabel.setText("Top speed");
 
         speedValue.setText("200");
 
+        speedSlider.setMaximum(450);
         speedSlider.setMinimum(50);
+        speedSlider.setValue(200);
+        speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                speedSliderStateChanged(evt);
+            }
+        });
 
         okButton.setText("OK");
         okButton.addActionListener(new java.awt.event.ActionListener() {
@@ -120,6 +116,18 @@ public class CarDialog extends javax.swing.JDialog {
                 stornoButtonActionPerformed(evt);
             }
         });
+
+        sizeComboBox.setModel(new DefaultComboBoxModel(Car.Size.values()));
+        sizeComboBox.setSelectedItem(Car.Size.Medium);
+        sizeComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sizeComboBoxActionPerformed(evt);
+            }
+        });
+
+        kmphLabel.setText("km/h");
+
+        jLabel1.setText("l / 100 km");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,22 +146,26 @@ public class CarDialog extends javax.swing.JDialog {
                             .addComponent(speedLabel)
                             .addComponent(okButton))
                         .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(stornoButton)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(smallButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(mediumButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(bigButton))
-                            .addComponent(consumptionSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(speedValue)
-                                .addGap(18, 18, 18)
-                                .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                            .addComponent(yearSpinner)
-                            .addComponent(nameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE))))
-                .addContainerGap(38, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(kmphLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                                .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(stornoButton)
+                                    .addComponent(nameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(yearSpinner, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(sizeComboBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(consumptionSpinner, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel1)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {consumptionSpinner, nameTextField});
@@ -174,20 +186,20 @@ public class CarDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sizeLabel)
-                    .addComponent(smallButton)
-                    .addComponent(mediumButton)
-                    .addComponent(bigButton))
+                    .addComponent(sizeComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(consumptionLabel)
-                    .addComponent(consumptionSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(consumptionSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(speedLabel)
-                        .addComponent(speedValue))
+                        .addComponent(speedValue)
+                        .addComponent(kmphLabel))
                     .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
                     .addComponent(stornoButton))
@@ -203,7 +215,12 @@ public class CarDialog extends javax.swing.JDialog {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
         actionButton = "OK";
-        this.dispose();
+        if((int)yearSpinner.getValue() > 2017 || (int)yearSpinner.getValue() < 1950){
+            yearSpinner.setValue(car.getYear());
+        }else{
+            this.dispose();
+        }
+        
     }//GEN-LAST:event_okButtonActionPerformed
 
     private void stornoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stornoButtonActionPerformed
@@ -211,24 +228,30 @@ public class CarDialog extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_stornoButtonActionPerformed
 
-    
-    private void speedStateChanged(javax.swing.event.ChangeEvent evt) {                                    
+    private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
         speedValue.setText(String.valueOf(speedSlider.getValue()));
-    }       
+    }//GEN-LAST:event_speedSliderStateChanged
+
+    private void sizeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sizeComboBoxActionPerformed
+        
+    }//GEN-LAST:event_sizeComboBoxActionPerformed
+
+    
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton bigButton;
     private javax.swing.JLabel consumptionLabel;
     private javax.swing.JSpinner consumptionSpinner;
     private javax.swing.JLabel heading;
-    private javax.swing.JRadioButton mediumButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel kmphLabel;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JButton okButton;
     private javax.swing.ButtonGroup sizeButtonGroup;
+    private javax.swing.JComboBox sizeComboBox;
     private javax.swing.JLabel sizeLabel;
-    private javax.swing.JRadioButton smallButton;
     private javax.swing.JLabel speedLabel;
     private javax.swing.JSlider speedSlider;
     private javax.swing.JLabel speedValue;
