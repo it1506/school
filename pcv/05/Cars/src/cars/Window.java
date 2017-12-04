@@ -5,7 +5,13 @@
  */
 package cars;
 
+import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -35,6 +41,8 @@ public class Window extends javax.swing.JFrame {
         removeMenu = new javax.swing.JMenuItem();
         removeAllMenu = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenuItem();
+        openMenu = new javax.swing.JMenuItem();
+        saveMenu = new javax.swing.JMenuItem();
         heading = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
         cars = new javax.swing.JList();
@@ -45,6 +53,7 @@ public class Window extends javax.swing.JFrame {
         suv = new javax.swing.JRadioButton();
         sport = new javax.swing.JRadioButton();
         other = new javax.swing.JRadioButton();
+        img = new javax.swing.JLabel();
 
         removeMenu.setText("Remove");
         removeMenu.addActionListener(new java.awt.event.ActionListener() {
@@ -70,8 +79,25 @@ public class Window extends javax.swing.JFrame {
         });
         popupMenu.add(editMenu);
 
+        openMenu.setText("Open File");
+        openMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuActionPerformed(evt);
+            }
+        });
+        popupMenu.add(openMenu);
+
+        saveMenu.setText("Save File");
+        saveMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuActionPerformed(evt);
+            }
+        });
+        popupMenu.add(saveMenu);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        heading.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         heading.setText("MY CARS");
 
         cars.setModel(new javax.swing.AbstractListModel() {
@@ -96,15 +122,37 @@ public class Window extends javax.swing.JFrame {
         carType.add(sedan);
         sedan.setSelected(true);
         sedan.setText("Sedan");
+        sedan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sedanActionPerformed(evt);
+            }
+        });
 
         carType.add(suv);
         suv.setText("SUV");
+        suv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                suvActionPerformed(evt);
+            }
+        });
 
         carType.add(sport);
         sport.setText("Sport");
+        sport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sportActionPerformed(evt);
+            }
+        });
 
         carType.add(other);
         other.setText("Other");
+        other.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                otherActionPerformed(evt);
+            }
+        });
+
+        img.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/sedan.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -112,23 +160,27 @@ public class Window extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(addButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(sedan)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(suv)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(sport)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(other))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(img)
                     .addComponent(heading)
-                    .addComponent(addLabel)
-                    .addComponent(scrollPane))
-                .addGap(90, 90, 90))
+                    .addComponent(scrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 559, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(addButton))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(sedan)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(suv)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(sport)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(other))
+                            .addComponent(addLabel))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,7 +201,9 @@ public class Window extends javax.swing.JFrame {
                     .addComponent(suv)
                     .addComponent(sport)
                     .addComponent(other))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(img)
+                .addGap(3, 3, 3))
         );
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {addButton, nameTextField});
@@ -194,6 +248,82 @@ public class Window extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_editMenuActionPerformed
 
+    private void sedanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sedanActionPerformed
+        ImageIcon image = new ImageIcon(getClass().getResource("/img/sedan.png"));
+        img.setIcon(image);
+    }//GEN-LAST:event_sedanActionPerformed
+
+    private void openMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuActionPerformed
+        try (BufferedReader br = new BufferedReader(new FileReader("file.txt")))
+        {
+                String s;
+                int i = 0;
+                while ((s = br.readLine()) != null)
+                {
+                        if(i>0)
+                        {
+                            String[] attr = s.split(";");
+                            Car car = new Car(attr[1]);
+                            car.setYear(Integer.parseInt(attr[2]));
+                            if(attr[3] == "Big")
+                                car.setSize(Car.Size.Big);
+                            else if(attr[3] == "Medium")
+                                car.setSize(Car.Size.Medium);
+                            else
+                                car.setSize(Car.Size.Small);
+                            car.setConsumption(Integer.parseInt(attr[4]));
+                            car.setSpeed(Integer.parseInt(attr[5]));
+                            
+                            model.addElement(car);
+                        }
+                        i++;
+                }
+        }
+        catch (Exception e)
+        {
+            System.err.println("Opening filed.");
+        }
+    }//GEN-LAST:event_openMenuActionPerformed
+
+    private void saveMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuActionPerformed
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("file.txt")))
+        {
+                bw.write("class;name;year;size;consumption;speed");
+                bw.newLine();
+                for(int i=0; i<model.getSize();i++)
+                {
+                    Car car = (Car)model.get(i);
+                    String output = car.getClass().getSimpleName() + ";"
+                            + car.getName() + ";"
+                            + car.getYear() + ";"
+                            + car.getSize() + ";"
+                            + car.getConsumption() + ";"
+                            + car.getSpeed();  
+                    bw.write(output);
+                    bw.newLine();
+                }
+                bw.flush();
+        }catch (Exception e)
+        {
+                System.err.println("Saving failed.");
+        }
+    }//GEN-LAST:event_saveMenuActionPerformed
+
+    private void suvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suvActionPerformed
+        ImageIcon image = new ImageIcon(getClass().getResource("/img/suv.png"));
+        img.setIcon(image);
+    }//GEN-LAST:event_suvActionPerformed
+
+    private void sportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sportActionPerformed
+        ImageIcon image = new ImageIcon(getClass().getResource("/img/sport.png"));
+        img.setIcon(image);
+    }//GEN-LAST:event_sportActionPerformed
+
+    private void otherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_otherActionPerformed
+        ImageIcon image = new ImageIcon(getClass().getResource("/img/other.png"));
+        img.setIcon(image);
+    }//GEN-LAST:event_otherActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -236,11 +366,14 @@ public class Window extends javax.swing.JFrame {
     private javax.swing.JList cars;
     private javax.swing.JMenuItem editMenu;
     private javax.swing.JLabel heading;
+    private javax.swing.JLabel img;
     private javax.swing.JTextField nameTextField;
+    private javax.swing.JMenuItem openMenu;
     private javax.swing.JRadioButton other;
     private javax.swing.JPopupMenu popupMenu;
     private javax.swing.JMenuItem removeAllMenu;
     private javax.swing.JMenuItem removeMenu;
+    private javax.swing.JMenuItem saveMenu;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JRadioButton sedan;
     private javax.swing.JRadioButton sport;

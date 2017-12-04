@@ -1,0 +1,4 @@
+class;name;year;size;consumption;speed
+Car;Skoda;2014;Small;5;240
+Car;Ferrari;2012;Small;8;320
+Car;Jeep;2015;Big;9;215
