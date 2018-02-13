@@ -5,17 +5,42 @@
  */
 package editor;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Date;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author student
  */
 public class MainWindow extends javax.swing.JFrame {
-
+    private File soubor;
+    private final Soubor txtSoubor = new Soubor();
+    private String kodovani = "UTF-8";
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
         initComponents();
+    }
+    
+    private String informaceOSouboru(){
+        String info = "";
+        info += "Název souboru: " + soubor.getName() + "\n";
+        info += "Umístění: " + soubor.getParent() + "\n";
+        info += "Velikost: " + String.valueOf(soubor.length()) + " bytes\n";
+        info += "Práva: ";
+        info += soubor.canRead() ? "R " : "- ";
+        info += soubor.canWrite() ? "W " : "- ";
+        info += soubor.canExecute() ? "X\n" : "-\n";
+        info += "Skrytý sobor: " + (soubor.isHidden() ? "ano\n" : "ne\n");
+        Date datum = new Date();
+        datum.setTime(soubor.lastModified());
+        info += "Datum aktualizace: " + datum.toString();
+        return info;
     }
 
     /**
@@ -33,8 +58,11 @@ public class MainWindow extends javax.swing.JFrame {
         buttonOpenFile = new javax.swing.JButton();
         buttonSaveFile = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        textArea = new javax.swing.JTextArea();
+        editor = new javax.swing.JTextArea();
         statusBar = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         itemNewFile = new javax.swing.JMenuItem();
@@ -85,6 +113,11 @@ public class MainWindow extends javax.swing.JFrame {
         buttonOpenFile.setFocusable(false);
         buttonOpenFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonOpenFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonOpenFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonOpenFileActionPerformed(evt);
+            }
+        });
         toolBar.add(buttonOpenFile);
 
         buttonSaveFile.setIcon(new javax.swing.ImageIcon("D:\\studenti\\IT3\\havranek\\pcv\\Editor\\ikony\\save.png")); // NOI18N
@@ -94,20 +127,23 @@ public class MainWindow extends javax.swing.JFrame {
         buttonSaveFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         toolBar.add(buttonSaveFile);
 
-        textArea.setColumns(20);
-        textArea.setRows(5);
-        jScrollPane1.setViewportView(textArea);
+        editor.setColumns(20);
+        editor.setRows(5);
+        jScrollPane1.setViewportView(editor);
 
-        javax.swing.GroupLayout statusBarLayout = new javax.swing.GroupLayout(statusBar);
-        statusBar.setLayout(statusBarLayout);
-        statusBarLayout.setHorizontalGroup(
-            statusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        statusBarLayout.setVerticalGroup(
-            statusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 26, Short.MAX_VALUE)
-        );
+        statusBar.setLayout(new java.awt.GridLayout(1, 3, 10, 0));
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Název souboru");
+        statusBar.add(jLabel1);
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Vlastnosti souboru");
+        statusBar.add(jLabel2);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Parametry textu");
+        statusBar.add(jLabel3);
 
         menuFile.setText("Soubor");
 
@@ -145,6 +181,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         itemFileInfo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.CTRL_MASK));
         itemFileInfo.setText("Informace o souboru");
+        itemFileInfo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemFileInfoActionPerformed(evt);
+            }
+        });
         menuFile.add(itemFileInfo);
         menuFile.add(jSeparator2);
 
@@ -253,9 +294,9 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(toolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(statusBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(statusBar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -270,7 +311,26 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_itemNewFileActionPerformed
 
     private void itemOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemOpenFileActionPerformed
-        // TODO add your handling code here:
+        try{
+            JFileChooser fc = new JFileChooser();
+            fc.setDialogType(JFileChooser.OPEN_DIALOG);
+            fc.setDialogTitle("Otevření souboru");
+            fc.setCurrentDirectory(new java.io.File("."));
+            FileNameExtensionFilter myFilter = new FileNameExtensionFilter("Text","txt");
+            fc.setFileFilter(myFilter);
+            if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+                soubor = fc.getSelectedFile();
+                try{
+                    txtSoubor.nactiZeSouboru(soubor,kodovani);
+                    editor.setText(txtSoubor.getData());
+                }catch(FileNotFoundException e){
+                    JOptionPane.showMessageDialog(this, "Požadovaný soubor nebyl nalezen!","Chyba!",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Nastala chyba při otevírání souboru!","Chyba!",JOptionPane.ERROR_MESSAGE);
+            }
     }//GEN-LAST:event_itemOpenFileActionPerformed
 
     private void itemSaveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSaveFileActionPerformed
@@ -296,6 +356,14 @@ public class MainWindow extends javax.swing.JFrame {
             statusBar.setVisible(true);
         }
     }//GEN-LAST:event_itemStatusBarActionPerformed
+
+    private void buttonOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOpenFileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_buttonOpenFileActionPerformed
+
+    private void itemFileInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemFileInfoActionPerformed
+       JOptionPane.showMessageDialog(this, informaceOSouboru(),"Info",JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_itemFileInfoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -337,6 +405,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton buttonNewFile;
     private javax.swing.JButton buttonOpenFile;
     private javax.swing.JButton buttonSaveFile;
+    private javax.swing.JTextArea editor;
     private javax.swing.JMenuItem itemBackgroundColor;
     private javax.swing.JMenu itemCharCode;
     private javax.swing.JMenuItem itemCloseWindow;
@@ -354,6 +423,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem itemStatusBar;
     private javax.swing.JCheckBoxMenuItem itemToolBar;
     private javax.swing.JMenu itemView;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
@@ -367,7 +439,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenu menuSetting;
     private javax.swing.JPanel statusBar;
-    private javax.swing.JTextArea textArea;
     private javax.swing.JToolBar toolBar;
     // End of variables declaration//GEN-END:variables
 }
