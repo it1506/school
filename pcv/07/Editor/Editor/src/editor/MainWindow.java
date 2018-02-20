@@ -8,9 +8,13 @@ package editor;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.BadLocationException;
+import sun.util.logging.PlatformLogger;
 
 /**
  *
@@ -20,11 +24,14 @@ public class MainWindow extends javax.swing.JFrame {
     private File soubor;
     private final Soubor txtSoubor = new Soubor();
     private String kodovani = "UTF-8";
+    private String searchText = "";
+    private String replText = "";
     /**
      * Creates new form MainWindow
      */
     public MainWindow() {
         initComponents();
+        this.setTitle("Editorek");
     }
     
     private String informaceOSouboru(){
@@ -217,10 +224,20 @@ public class MainWindow extends javax.swing.JFrame {
 
         itemFind.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F, java.awt.event.InputEvent.CTRL_MASK));
         itemFind.setText("Hledat...");
+        itemFind.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemFindActionPerformed(evt);
+            }
+        });
         menuEdit.add(itemFind);
 
         itemReplace.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_H, java.awt.event.InputEvent.CTRL_MASK));
         itemReplace.setText("Nahradit...");
+        itemReplace.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemReplaceActionPerformed(evt);
+            }
+        });
         menuEdit.add(itemReplace);
         menuEdit.add(jSeparator4);
 
@@ -365,6 +382,44 @@ public class MainWindow extends javax.swing.JFrame {
        JOptionPane.showMessageDialog(this, informaceOSouboru(),"Info",JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_itemFileInfoActionPerformed
 
+    private void itemReplaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemReplaceActionPerformed
+        NahraditDialog nahraditDialog = new NahraditDialog(this,true,searchText,replText);
+        if(nahraditDialog.showDialog().equals("Nahradit")){
+            editor.requestFocusInWindow();
+            searchText = nahraditDialog.getReplacedText();
+            replText = nahraditDialog.getNewText();
+            this.searchOperation(searchText, replText, true);
+        }
+    }//GEN-LAST:event_itemReplaceActionPerformed
+
+    private void itemFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemFindActionPerformed
+        searchText = JOptionPane.showInputDialog(this,"Zadej hledaný řetězec");
+        this.searchOperation(searchText, null, false);
+    }//GEN-LAST:event_itemFindActionPerformed
+    
+    private void searchOperation(String foundTxt, String replacedTxt, Boolean replace){
+        editor.requestFocusInWindow();
+        int startForm = 
+                (editor.getCaretPosition() == editor.getDocument().getLength()) ? 0 : editor.getCaretPosition();
+        int max = editor.getDocument().getLength() - startForm;
+        int searchIndex = -1;
+        try{
+            searchIndex = editor.getDocument().getText(startForm, max).indexOf(foundTxt);
+        } catch (BadLocationException ex){
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (searchIndex != -1){
+            editor.select(searchIndex + startForm, searchIndex + startForm + foundTxt.length());
+            if(replace){
+                editor.replaceSelection(replacedTxt);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Řetězec nebyl nalezen");
+            editor.setSelectionStart(-1);
+            editor.setSelectionEnd(-1);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
