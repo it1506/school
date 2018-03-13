@@ -117,6 +117,20 @@ public class OknoSlovnik extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Chyba při komunikaci s databází", "Chyba", JOptionPane.ERROR_MESSAGE);
         }
     }
+    /*
+    private String[] slovniDruhy {
+        ResultSet vysledky = null;
+        try {
+            // Parametrizovaný dotaz - otazník představuje vždy jeden parametr 
+            PreparedStatement dotaz = spojeni.prepareStatement("SELECT * FROM slovnicek WHERE " + jazyk + " LIKE ?");
+            // Do prvního parametru dotazu bude dosazen hledaný řetězec, symboly % zastupují libovolné znaky 
+            vysledky = dotaz.executeQuery();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Chyba při komunikaci s databází", "Chyba", JOptionPane.ERROR_MESSAGE);
+        }
+        return druhy;
+    }
+*/
 
     /* Metoda zajišťuje připojení k serveru MySQL prostřednictvím JDBC */
     private void dbConnection() {
@@ -181,9 +195,10 @@ public class OknoSlovnik extends javax.swing.JFrame {
         try {
             /* Parametrizovaný dotaz obsahuje 2 parametry */
             PreparedStatement dotaz = spojeni.prepareStatement("INSERT INTO slovnicek (cs, en) VALUES (?, ?)");
-            /* Dosazení řetězce za první a druhý parametr */
+            /* Dosazení řetězce za první, druhý parametr a třetí */
             dotaz.setString(1, csWord);
             dotaz.setString(2, enWord);
+            //dotaz.setString(3, druh);
             /* Aktualizace databáze, návratová hodnota představuje celkový počet záznamů */
             numRows = dotaz.executeUpdate();
         } catch (SQLException ex) {
@@ -200,6 +215,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
             dotaz.setString(1, csWord);
             dotaz.setString(2, enWord);
             dotaz.setInt(3, id);
+            //dotaz.setString(4,druh);
             numRows = dotaz.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Chyba při komunikaci s databází", "Chyba", JOptionPane.ERROR_MESSAGE);

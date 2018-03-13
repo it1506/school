@@ -14,7 +14,7 @@ import javax.swing.DefaultComboBoxModel;
 public class slovaDialog extends javax.swing.JDialog {
     private String actionButton = "Storno";
     public enum Druh {
-        noun, adjective, pronoun;
+        noun, adjective, pronoun, verb, adverb, preposition, conjunction;
     }
     /**
      * Creates new form slovaDialog
@@ -27,6 +27,9 @@ public class slovaDialog extends javax.swing.JDialog {
         initComponents();
         this.enText.setText(slova[1]);
         this.csText.setText(slova[0]);
+        druhComboBox.removeAllItems();
+        druhComboBox.setModel(new DefaultComboBoxModel(slovaDialog.Druh.values()));
+        druhComboBox.setSelectedItem(Druh.noun);
         /*
         druhComboBox.removeAllItems();
         druhComboBox.setModel(new DefaultComboBoxModel(Car.Size.values()));
@@ -51,6 +54,10 @@ public class slovaDialog extends javax.swing.JDialog {
 
     public String getCesky() {
         return this.csText.getText();
+    }
+    
+    public String getDruh() {
+        return this.druhComboBox.getName();
     }
     
     
@@ -82,6 +89,12 @@ public class slovaDialog extends javax.swing.JDialog {
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
+            }
+        });
+
+        csText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                csTextActionPerformed(evt);
             }
         });
 
@@ -164,6 +177,10 @@ public class slovaDialog extends javax.swing.JDialog {
     private void druhComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_druhComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_druhComboBoxActionPerformed
+
+    private void csTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_csTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_csTextActionPerformed
 
     /**
      * @param args the command line arguments
