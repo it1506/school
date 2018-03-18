@@ -17,48 +17,41 @@ import javax.swing.JColorChooser;
 public class FontDialog extends javax.swing.JDialog {
     private String actionButton = "Storno";
     public Font pismo;
-    public String fontName;
+    private String fontName;
     public Color barva;
-    public int style;
-    public int sizeFont;
+    private int sizeFont;
+    
+    String[] fontList = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+    
     /**
      * Creates new form FontDialog
      */
     public FontDialog(java.awt.Frame parent, boolean modal, Font font, Color color) {
         super(parent, modal);
         initComponents();
+        this.barva = color;
         this.sizeFont = font.getSize();
         this.pismo = font;
-        this.barva = color;
-        ukazka.setForeground(color);
         this.fontName = font.getFamily();
-        this.style = font.getStyle();
-        for(String s : fontList){
-            typPisma.addItem(s);
-        }
         int i=0;
         for(String s : fontList){
-            typPisma.addItem(s);
+            fontFamily.addItem(s);
             if(s.equalsIgnoreCase(font.getFamily()))
-                i=typPisma.getItemCount()-1;
+                i=fontFamily.getItemCount()-1;
         }
-        this.typPisma.setSelectedIndex(i);
-        this.size.setValue(this.sizeFont);
-        pismo = typPisma.getFont();
-        ukazka.setFont(pismo);
-        ukazka.setForeground(color);
-        size.setValue(pismo.getSize());
+        this.fontFamily.setSelectedIndex(i);
+        this.fontSize.setValue(this.sizeFont);
+        pismo = fontFamily.getFont(); 
+        
+        testText.setFont(pismo);
+        testText.setForeground(color);
+        
+        this.setTitle("Nastavení písma");
     }
     
-    String[] fontList = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-        /*
-    public Font getFont(){
-        pismo = new Font(typPisma.getSelectedValue(), Font.PLAIN, (int) size.getValue());
-        return pismo;
-    }
-    */
-    public Color getForegroundColor(){
-        return barva;
+    
+    public Color getColor(){
+        return this.barva;
     }
     
     public String showDialog() {
@@ -66,6 +59,10 @@ public class FontDialog extends javax.swing.JDialog {
         return actionButton;
     }
     
+    public Font getFont(){
+        pismo = new Font(Font.SANS_SERIF, Font.PLAIN,(int) fontSize.getValue());
+        return pismo;
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -78,13 +75,13 @@ public class FontDialog extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        typPisma = new javax.swing.JComboBox<>();
-        ukazka = new javax.swing.JTextField();
-        velikost = new javax.swing.JSpinner();
-        barvaPisma = new javax.swing.JButton();
+        fontFamily = new javax.swing.JComboBox<>();
+        testText = new javax.swing.JTextField();
+        fontSize = new javax.swing.JSpinner();
+        colorButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        ulozit = new javax.swing.JButton();
-        storno = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
+        stornoButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -92,42 +89,46 @@ public class FontDialog extends javax.swing.JDialog {
 
         jLabel2.setText("Velikost písma");
 
-        typPisma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        ukazka.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        ukazka.setText("Ukázka");
-        ukazka.addActionListener(new java.awt.event.ActionListener() {
+        fontFamily.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ukazkaActionPerformed(evt);
+                fontFamilyActionPerformed(evt);
             }
         });
 
-        velikost.setToolTipText("Font Size");
-        velikost.setAutoscrolls(true);
-        velikost.setFocusCycleRoot(true);
-        velikost.setMinimumSize(new java.awt.Dimension(36, 20));
-        velikost.setPreferredSize(new java.awt.Dimension(36, 20));
-
-        barvaPisma.setText("Vybrat");
-        barvaPisma.addActionListener(new java.awt.event.ActionListener() {
+        testText.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        testText.setText("Ukázka");
+        testText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                barvaPismaActionPerformed(evt);
+                testTextActionPerformed(evt);
+            }
+        });
+
+        fontSize.setToolTipText("Font Size");
+        fontSize.setAutoscrolls(true);
+        fontSize.setFocusCycleRoot(true);
+        fontSize.setMinimumSize(new java.awt.Dimension(36, 20));
+        fontSize.setPreferredSize(new java.awt.Dimension(36, 20));
+
+        colorButton.setText("Vybrat");
+        colorButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorButtonActionPerformed(evt);
             }
         });
 
         jLabel3.setText("Barva písma");
 
-        ulozit.setText("Uložit");
-        ulozit.addActionListener(new java.awt.event.ActionListener() {
+        saveButton.setText("Uložit");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ulozitActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
 
-        storno.setText("Storno");
-        storno.addActionListener(new java.awt.event.ActionListener() {
+        stornoButton.setText("Storno");
+        stornoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stornoActionPerformed(evt);
+                stornoButtonActionPerformed(evt);
             }
         });
 
@@ -139,21 +140,22 @@ public class FontDialog extends javax.swing.JDialog {
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(ulozit)
+                        .addComponent(saveButton)
                         .addGap(18, 18, 18)
-                        .addComponent(storno))
+                        .addComponent(stornoButton))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel1)
                                 .addComponent(jLabel3)
                                 .addComponent(jLabel2))
-                            .addGap(97, 97, 97)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(velikost, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(barvaPisma, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(typPisma, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(ukazka, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(21, 21, 21)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(fontSize, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(colorButton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(fontFamily, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(testText, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -162,59 +164,65 @@ public class FontDialog extends javax.swing.JDialog {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(typPisma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fontFamily, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(fontSize, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(velikost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(barvaPisma)
+                    .addComponent(colorButton)
                     .addComponent(jLabel3))
                 .addGap(15, 15, 15)
-                .addComponent(ukazka, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(testText, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ulozit)
-                    .addComponent(storno))
+                    .addComponent(saveButton)
+                    .addComponent(stornoButton))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ukazkaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ukazkaActionPerformed
+    private void testTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testTextActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_ukazkaActionPerformed
+    }//GEN-LAST:event_testTextActionPerformed
 
-    private void ulozitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ulozitActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         actionButton = "Save";
         this.setVisible(false);
         this.dispose();
-    }//GEN-LAST:event_ulozitActionPerformed
+    }//GEN-LAST:event_saveButtonActionPerformed
 
-    private void barvaPismaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_barvaPismaActionPerformed
-        barva = JColorChooser.showDialog(this, "Vyber si barvu", ukazka.getForeground());
-        ukazka.setForeground(barva);
-    }//GEN-LAST:event_barvaPismaActionPerformed
+    private void colorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorButtonActionPerformed
+        barva = JColorChooser.showDialog(this, "Vyber si barvu", testText.getForeground());
+        testText.setForeground(barva);
+    }//GEN-LAST:event_colorButtonActionPerformed
 
-    private void stornoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stornoActionPerformed
+    private void stornoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stornoButtonActionPerformed
         actionButton = "Storno";
         this.setVisible(false);
         this.dispose();
-    }//GEN-LAST:event_stornoActionPerformed
+    }//GEN-LAST:event_stornoButtonActionPerformed
+
+    private void fontFamilyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fontFamilyActionPerformed
+        testText.setFont(getFont());
+    }//GEN-LAST:event_fontFamilyActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton barvaPisma;
+    private javax.swing.JButton colorButton;
+    private javax.swing.JComboBox<String> fontFamily;
+    private javax.swing.JSpinner fontSize;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JButton storno;
-    private javax.swing.JComboBox<String> typPisma;
-    private javax.swing.JTextField ukazka;
-    private javax.swing.JButton ulozit;
-    private javax.swing.JSpinner velikost;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JButton stornoButton;
+    private javax.swing.JTextField testText;
     // End of variables declaration//GEN-END:variables
+
+   
 }

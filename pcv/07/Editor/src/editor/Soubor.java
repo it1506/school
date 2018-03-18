@@ -44,7 +44,6 @@ public class Soubor {
     }
     
     public Boolean ulozDoSouboru(File soubor, String charset) throws FileNotFoundException {
-        data = "";
         try{
             OutputStream outputStream = new FileOutputStream(soubor);
             try(Writer writer = new OutputStreamWriter(outputStream,charset)){

@@ -12,8 +12,10 @@ import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import sun.util.logging.PlatformLogger;
@@ -28,6 +30,7 @@ public class MainWindow extends javax.swing.JFrame {
     private String kodovani = "UTF-8";
     private String searchText = "";
     private String replText = "";
+    private Color barva;
     /**
      * Creates new form MainWindow
      */
@@ -105,7 +108,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         toolBar.setRollover(true);
 
-        buttonNewFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/editor/new.png"))); // NOI18N
+        buttonNewFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikony/new.png"))); // NOI18N
         buttonNewFile.setText("Nový");
         buttonNewFile.setFocusable(false);
         buttonNewFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -117,7 +120,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
         toolBar.add(buttonNewFile);
 
-        buttonOpenFile.setIcon(new javax.swing.ImageIcon("D:\\studenti\\IT3\\havranek\\pcv\\Editor\\ikony\\open.png")); // NOI18N
+        buttonOpenFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikony/open.png"))); // NOI18N
         buttonOpenFile.setText("Otevřít");
         buttonOpenFile.setFocusable(false);
         buttonOpenFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -129,14 +132,20 @@ public class MainWindow extends javax.swing.JFrame {
         });
         toolBar.add(buttonOpenFile);
 
-        buttonSaveFile.setIcon(new javax.swing.ImageIcon("D:\\studenti\\IT3\\havranek\\pcv\\Editor\\ikony\\save.png")); // NOI18N
+        buttonSaveFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikony/save.png"))); // NOI18N
         buttonSaveFile.setText("Uložit");
         buttonSaveFile.setFocusable(false);
         buttonSaveFile.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         buttonSaveFile.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonSaveFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSaveFileActionPerformed(evt);
+            }
+        });
         toolBar.add(buttonSaveFile);
 
         editor.setColumns(20);
+        editor.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         editor.setRows(5);
         jScrollPane1.setViewportView(editor);
 
@@ -157,7 +166,7 @@ public class MainWindow extends javax.swing.JFrame {
         menuFile.setText("Soubor");
 
         itemNewFile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        itemNewFile.setIcon(new javax.swing.ImageIcon("D:\\studenti\\IT3\\havranek\\pcv\\Editor\\ikony\\new-small.png")); // NOI18N
+        itemNewFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikony/new-small.png"))); // NOI18N
         itemNewFile.setText("Nový");
         itemNewFile.setToolTipText("");
         itemNewFile.addActionListener(new java.awt.event.ActionListener() {
@@ -168,7 +177,7 @@ public class MainWindow extends javax.swing.JFrame {
         menuFile.add(itemNewFile);
 
         itemOpenFile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        itemOpenFile.setIcon(new javax.swing.ImageIcon("D:\\studenti\\IT3\\havranek\\pcv\\Editor\\ikony\\open-small.png")); // NOI18N
+        itemOpenFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikony/open-small.png"))); // NOI18N
         itemOpenFile.setText("Otevřít...");
         itemOpenFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,7 +187,7 @@ public class MainWindow extends javax.swing.JFrame {
         menuFile.add(itemOpenFile);
 
         itemSaveFile.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        itemSaveFile.setIcon(new javax.swing.ImageIcon("D:\\studenti\\IT3\\havranek\\pcv\\Editor\\ikony\\save-small.png")); // NOI18N
+        itemSaveFile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikony/save-small.png"))); // NOI18N
         itemSaveFile.setText("Uložit...");
         itemSaveFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -274,6 +283,11 @@ public class MainWindow extends javax.swing.JFrame {
         menuSetting.add(itemView);
 
         itemBackgroundColor.setText("Barva pozadí...");
+        itemBackgroundColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemBackgroundColorActionPerformed(evt);
+            }
+        });
         menuSetting.add(itemBackgroundColor);
 
         itemFont.setText("Písmo...");
@@ -327,11 +341,11 @@ public class MainWindow extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonNewFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonNewFileActionPerformed
-        // TODO add your handling code here:
+        editor.setText("");
     }//GEN-LAST:event_buttonNewFileActionPerformed
 
     private void itemNewFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemNewFileActionPerformed
-        // TODO add your handling code here:
+        editor.setText("");
     }//GEN-LAST:event_itemNewFileActionPerformed
 
     private void itemOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemOpenFileActionPerformed
@@ -358,7 +372,20 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_itemOpenFileActionPerformed
 
     private void itemSaveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSaveFileActionPerformed
-        // TODO add your handling code here:
+        try{
+            JFileChooser fc = new JFileChooser();
+            fc.setDialogType(JFileChooser.SAVE_DIALOG);
+            fc.setDialogTitle("Save file");
+            fc.setCurrentDirectory(new java.io.File("."));
+            FileNameExtensionFilter myFilter = new FileNameExtensionFilter("Text","txt");
+            fc.setFileFilter(myFilter);
+            if(fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+                    txtSoubor.setData(editor.getText());
+                    txtSoubor.ulozDoSouboru(fc.getSelectedFile(), kodovani);
+            }
+       }catch(Exception e){
+           JOptionPane.showMessageDialog(this, "Error when saving file!", "Error!", JOptionPane.ERROR_MESSAGE);
+       }
     }//GEN-LAST:event_itemSaveFileActionPerformed
 
     private void itemCloseWindowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCloseWindowActionPerformed
@@ -382,11 +409,31 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_itemStatusBarActionPerformed
 
     private void buttonOpenFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOpenFileActionPerformed
-        // TODO add your handling code here:
+        try{
+            JFileChooser fc = new JFileChooser();
+            fc.setDialogType(JFileChooser.OPEN_DIALOG);
+            fc.setDialogTitle("Otevření souboru");
+            fc.setCurrentDirectory(new java.io.File("."));
+            FileNameExtensionFilter myFilter = new FileNameExtensionFilter("Text","txt");
+            fc.setFileFilter(myFilter);
+            if(fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){
+                soubor = fc.getSelectedFile();
+                try{
+                    txtSoubor.nactiZeSouboru(soubor,kodovani);
+                    editor.setText(txtSoubor.getData());
+                }catch(FileNotFoundException e){
+                    JOptionPane.showMessageDialog(this, "Požadovaný soubor nebyl nalezen!","Chyba!",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Nastala chyba při otevírání souboru!","Chyba!",JOptionPane.ERROR_MESSAGE);
+            }
     }//GEN-LAST:event_buttonOpenFileActionPerformed
 
     private void itemFileInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemFileInfoActionPerformed
-       JOptionPane.showMessageDialog(this, informaceOSouboru(),"Info",JOptionPane.INFORMATION_MESSAGE);
+        if(soubor != null)
+        JOptionPane.showMessageDialog(this, informaceOSouboru(),"Info",JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_itemFileInfoActionPerformed
 
     private void itemReplaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemReplaceActionPerformed
@@ -406,14 +453,35 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void itemFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemFontActionPerformed
         Color color = editor.getForeground();
-        Color bgcolor = editor.getBackground();
         Font font = editor.getFont();
         FontDialog fontDialog = new FontDialog(this,true,font ,color);
         if(fontDialog.showDialog().equals("Save")){
             editor.setFont(fontDialog.getFont());
-            editor.setForeground(fontDialog.getForegroundColor());
+            editor.setForeground(fontDialog.getColor());
         }
     }//GEN-LAST:event_itemFontActionPerformed
+
+    private void buttonSaveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveFileActionPerformed
+        try{
+            JFileChooser fc = new JFileChooser();
+            fc.setDialogType(JFileChooser.SAVE_DIALOG);
+            fc.setDialogTitle("Save file");
+            fc.setCurrentDirectory(new java.io.File("."));
+            FileNameExtensionFilter myFilter = new FileNameExtensionFilter("Text","txt");
+            fc.setFileFilter(myFilter);
+            if(fc.showSaveDialog(this) == JFileChooser.APPROVE_OPTION){
+                    txtSoubor.setData(editor.getText());
+                    txtSoubor.ulozDoSouboru(fc.getSelectedFile(), kodovani);
+            }
+       }catch(Exception e){
+           JOptionPane.showMessageDialog(this, "Error when saving file!", "Error!", JOptionPane.ERROR_MESSAGE);
+       }
+    }//GEN-LAST:event_buttonSaveFileActionPerformed
+
+    private void itemBackgroundColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBackgroundColorActionPerformed
+        barva = JColorChooser.showDialog(this, "Vyber si barvu", editor.getBackground());
+        editor.setBackground(barva);
+    }//GEN-LAST:event_itemBackgroundColorActionPerformed
     
     private void searchOperation(String foundTxt, String replacedTxt, Boolean replace){
         editor.requestFocusInWindow();
@@ -450,7 +518,7 @@ public class MainWindow extends javax.swing.JFrame {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                     break;
                 }
             }

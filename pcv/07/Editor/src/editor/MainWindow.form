@@ -17,7 +17,7 @@
                   <KeyStroke key="Ctrl+N"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\studenti\IT3\havranek\pcv\Editor\ikony\new-small.png"/>
+                  <Image iconType="3" name="/ikony/new-small.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Nov&#xfd;"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
@@ -32,7 +32,7 @@
                   <KeyStroke key="Ctrl+O"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\studenti\IT3\havranek\pcv\Editor\ikony\open-small.png"/>
+                  <Image iconType="3" name="/ikony/open-small.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Otev&#x159;&#xed;t..."/>
               </Properties>
@@ -46,7 +46,7 @@
                   <KeyStroke key="Ctrl+S"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="D:\studenti\IT3\havranek\pcv\Editor\ikony\save-small.png"/>
+                  <Image iconType="3" name="/ikony/save-small.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Ulo&#x17e;it..."/>
               </Properties>
@@ -181,6 +181,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Barva pozad&#xed;..."/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="itemBackgroundColorActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="itemFont">
               <Properties>
@@ -278,7 +281,7 @@
         <Component class="javax.swing.JButton" name="buttonNewFile">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/editor/new.png"/>
+              <Image iconType="3" name="/ikony/new.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Nov&#xfd;"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -292,7 +295,7 @@
         <Component class="javax.swing.JButton" name="buttonOpenFile">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\studenti\IT3\havranek\pcv\Editor\ikony\open.png"/>
+              <Image iconType="3" name="/ikony/open.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Otev&#x159;&#xed;t"/>
             <Property name="focusable" type="boolean" value="false"/>
@@ -306,13 +309,16 @@
         <Component class="javax.swing.JButton" name="buttonSaveFile">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\studenti\IT3\havranek\pcv\Editor\ikony\save.png"/>
+              <Image iconType="3" name="/ikony/save.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Ulo&#x17e;it"/>
             <Property name="focusable" type="boolean" value="false"/>
             <Property name="horizontalTextPosition" type="int" value="0"/>
             <Property name="verticalTextPosition" type="int" value="3"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonSaveFileActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -326,6 +332,9 @@
         <Component class="javax.swing.JTextArea" name="editor">
           <Properties>
             <Property name="columns" type="int" value="20"/>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Calibri" size="24" style="0"/>
+            </Property>
             <Property name="rows" type="int" value="5"/>
           </Properties>
         </Component>
