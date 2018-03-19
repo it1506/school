@@ -5,24 +5,28 @@
  */
 package dictionary;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Danecek
  */
-public class slovaDialog extends javax.swing.JDialog {
+public class testDialog extends javax.swing.JDialog {
     private String actionButton = "Storno";
+    private String anglicky;
+    private String nemecky;
     /**
      * Creates new form slovaDialog
      * @param parent
      * @param modal
      * @param slova
      */
-    public slovaDialog(java.awt.Frame parent, boolean modal, String[] slova) {
+    public testDialog(java.awt.Frame parent, boolean modal, String[] slova) {
         super(parent, modal);
         initComponents();
         this.csText.setText(slova[0]);
-        this.enText.setText(slova[1]);
-        this.deText.setText(slova[2]);
+        this.anglicky = slova[1];
+        this.nemecky = slova[2];
     }
 
     /**
@@ -38,10 +42,6 @@ public class slovaDialog extends javax.swing.JDialog {
     
     public String getAnglicky() {
         return this.enText.getText();
-    }
-
-    public String getCesky() {
-        return this.csText.getText();
     }
     
     public String getNemecky() {
@@ -61,11 +61,11 @@ public class slovaDialog extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         okButton = new javax.swing.JButton();
-        csText = new javax.swing.JTextField();
         enText = new javax.swing.JTextField();
         storno = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         deText = new javax.swing.JTextField();
+        csText = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -73,16 +73,10 @@ public class slovaDialog extends javax.swing.JDialog {
 
         jLabel2.setText("anglicky");
 
-        okButton.setText("OK");
+        okButton.setText("Vyhodnotit");
         okButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 okButtonActionPerformed(evt);
-            }
-        });
-
-        csText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                csTextActionPerformed(evt);
             }
         });
 
@@ -101,6 +95,8 @@ public class slovaDialog extends javax.swing.JDialog {
                 deTextActionPerformed(evt);
             }
         });
+
+        csText.setText(" ");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -121,17 +117,17 @@ public class slovaDialog extends javax.swing.JDialog {
                         .addGap(77, 77, 77)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(enText, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
-                            .addComponent(csText)
-                            .addComponent(deText))))
+                            .addComponent(deText)
+                            .addComponent(csText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(csText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(csText))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -140,7 +136,7 @@ public class slovaDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(deText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(okButton)
                     .addComponent(storno))
@@ -152,7 +148,11 @@ public class slovaDialog extends javax.swing.JDialog {
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
        actionButton = "OK";
-       /* Uvolní objekt formuláře z paměti */
+       if(this.enText.getText().equals(anglicky) && this.deText.getText().equals(nemecky)){
+           JOptionPane.showMessageDialog(this, "Správně!", "   :)", JOptionPane.PLAIN_MESSAGE);
+        }else{
+           JOptionPane.showMessageDialog(this, "Špatně...", "   :(", JOptionPane.PLAIN_MESSAGE);
+       }
        this.dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
@@ -160,10 +160,6 @@ public class slovaDialog extends javax.swing.JDialog {
        actionButton = "Storno";
        this.dispose();
     }//GEN-LAST:event_stornoActionPerformed
-
-    private void csTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_csTextActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_csTextActionPerformed
 
     private void deTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deTextActionPerformed
         // TODO add your handling code here:
@@ -174,7 +170,7 @@ public class slovaDialog extends javax.swing.JDialog {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField csText;
+    private javax.swing.JLabel csText;
     private javax.swing.JTextField deText;
     private javax.swing.JTextField enText;
     private javax.swing.JLabel jLabel1;

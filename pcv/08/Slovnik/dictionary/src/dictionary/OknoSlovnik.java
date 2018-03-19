@@ -17,6 +17,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -25,7 +26,7 @@ import javax.swing.table.TableColumn;
 
 /**
  *
- * @author ml-notebook
+ * @author Danecek
  */
 public class OknoSlovnik extends javax.swing.JFrame {
 
@@ -48,7 +49,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
                 },
                 /* Označení záhlaví sloupců - pole typu String */
                 new String[]{
-                    "ID", "Čeština", "Angličtina", "Slovní druh"
+                    "ID", "Čeština", "Angličtina", "Němčina"
                 }
         ) {
             /* Definování datových typů pro jednotlivé sloupce */
@@ -98,9 +99,9 @@ public class OknoSlovnik extends javax.swing.JFrame {
                 int id = data.getInt(1);
                 String cesky = data.getString("cs");
                 String anglicky = data.getString("en");
-                String druh = data.getString("slovni_druh");
+                String nemecky = data.getString("de");
                 /* Přidávaný řádek je objektem, který tvoří hodnoty pro jednotlivé sloupce tabulky */
-                model.addRow(new Object[]{id, cesky, anglicky, druh});
+                model.addRow(new Object[]{id, cesky, anglicky, nemecky});
             }
             /* Nastavení informace o počtu záznamů do stavového řádku */
             pocetZaznamu.setText("Počet záznamů: " + getRowsCount(data));
@@ -117,20 +118,6 @@ public class OknoSlovnik extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Chyba při komunikaci s databází", "Chyba", JOptionPane.ERROR_MESSAGE);
         }
     }
-    /*
-    private String[] slovniDruhy {
-        ResultSet vysledky = null;
-        try {
-            // Parametrizovaný dotaz - otazník představuje vždy jeden parametr 
-            PreparedStatement dotaz = spojeni.prepareStatement("SELECT * FROM slovnicek WHERE " + jazyk + " LIKE ?");
-            // Do prvního parametru dotazu bude dosazen hledaný řetězec, symboly % zastupují libovolné znaky 
-            vysledky = dotaz.executeQuery();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Chyba při komunikaci s databází", "Chyba", JOptionPane.ERROR_MESSAGE);
-        }
-        return druhy;
-    }
-*/
 
     /* Metoda zajišťuje připojení k serveru MySQL prostřednictvím JDBC */
     private void dbConnection() {
@@ -190,15 +177,15 @@ public class OknoSlovnik extends javax.swing.JFrame {
     }
 
     /* Metoda zajistí vložení nových slovíček do databáze */
-    private int insertRecord(String enWord, String csWord) {
+    private int insertRecord(String enWord, String csWord, String deWord) {
         int numRows = 0;
         try {
             /* Parametrizovaný dotaz obsahuje 2 parametry */
-            PreparedStatement dotaz = spojeni.prepareStatement("INSERT INTO slovnicek (cs, en) VALUES (?, ?)");
+            PreparedStatement dotaz = spojeni.prepareStatement("INSERT INTO slovnicek (cs, en, de) VALUES (?, ?, ?)");
             /* Dosazení řetězce za první, druhý parametr a třetí */
             dotaz.setString(1, csWord);
             dotaz.setString(2, enWord);
-            //dotaz.setString(3, druh);
+            dotaz.setString(3, deWord);
             /* Aktualizace databáze, návratová hodnota představuje celkový počet záznamů */
             numRows = dotaz.executeUpdate();
         } catch (SQLException ex) {
@@ -208,14 +195,14 @@ public class OknoSlovnik extends javax.swing.JFrame {
     }
 
     /* Metoda zajistí aktualizaci vybraného záznamu (podle id) */
-    private int updateRecord(int id, String enWord, String csWord) {
+    private int updateRecord(int id, String enWord, String csWord, String deWord) {
         int numRows = 0;
         try {
-            PreparedStatement dotaz = spojeni.prepareStatement("UPDATE slovnicek SET cs=?, en=? WHERE id=?");
+            PreparedStatement dotaz = spojeni.prepareStatement("UPDATE slovnicek SET cs=?, en=?, de=? WHERE id=?");
             dotaz.setString(1, csWord);
             dotaz.setString(2, enWord);
-            dotaz.setInt(3, id);
-            //dotaz.setString(4,druh);
+            dotaz.setString(3,deWord);
+            dotaz.setInt(4, id);
             numRows = dotaz.executeUpdate();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Chyba při komunikaci s databází", "Chyba", JOptionPane.ERROR_MESSAGE);
@@ -273,6 +260,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
         jazyk = new javax.swing.JComboBox();
         findText = new javax.swing.JTextField();
         showAll = new javax.swing.JButton();
+        test = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         pocetZaznamu = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -378,7 +366,12 @@ public class OknoSlovnik extends javax.swing.JFrame {
         });
         jToolBar1.add(search);
 
-        jazyk.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "cs", "en" }));
+        jazyk.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "cs", "en", "de" }));
+        jazyk.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jazykActionPerformed(evt);
+            }
+        });
         jToolBar1.add(jazyk);
 
         findText.setMinimumSize(new java.awt.Dimension(150, 20));
@@ -397,6 +390,17 @@ public class OknoSlovnik extends javax.swing.JFrame {
         });
         jToolBar1.add(showAll);
 
+        test.setText("Test");
+        test.setFocusable(false);
+        test.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        test.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        test.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                testActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(test);
+
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -410,7 +414,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pocetZaznamu)
-                .addContainerGap(393, Short.MAX_VALUE))
+                .addContainerGap(440, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -537,7 +541,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
         /* Zobrazení dialogového okna metodou showDialog() */
         if (slovaDialog.showDialog().equalsIgnoreCase("OK")) {
             /* Vložení nového záznamu do databáze */
-            insertRecord(slovaDialog.getAnglicky(), slovaDialog.getCesky());
+            insertRecord(slovaDialog.getAnglicky(), slovaDialog.getCesky(), slovaDialog.getNemecky());
         }
         /* Aktualizovaný výpis záznamů */
         listData(this.getAllRecords());
@@ -548,14 +552,14 @@ public class OknoSlovnik extends javax.swing.JFrame {
         /* zjištění id podle označeného řádku tabulky (z prvního sloupce - index 0) */
         int id = (int) tabulka.getModel().getValueAt(tabulka.getSelectedRow(), 0);
         /* Zjistí slovíčka ve vyznačeném řádku tabulky a uloží je do pole */
-        String[] slova = {tabulka.getModel().getValueAt(tabulka.getSelectedRow(), 1).toString(), tabulka.getModel().getValueAt(tabulka.getSelectedRow(), 2).toString()};
+        String[] slova = {tabulka.getModel().getValueAt(tabulka.getSelectedRow(), 1).toString(), tabulka.getModel().getValueAt(tabulka.getSelectedRow(), 2).toString(), tabulka.getModel().getValueAt(tabulka.getSelectedRow(), 3).toString()};
         /* Otevře dialogové okno a  prostřednictvím konstruktoru předá zvolená slova */
         slovaDialog slovaDialog = new slovaDialog(this, true, slova);
         /* Změní titulek dialogového okna */
         slovaDialog.setTitle("Změnit slovo");
         /* Zobrazení dialogového okna metodou showDialog() */
         if (slovaDialog.showDialog().equalsIgnoreCase("OK")) {
-            updateRecord(id, slovaDialog.getAnglicky(), slovaDialog.getCesky());
+            updateRecord(id, slovaDialog.getAnglicky(), slovaDialog.getCesky(), slovaDialog.getNemecky());
         }
         listData(this.getAllRecords());
     }//GEN-LAST:event_updateActionPerformed
@@ -607,10 +611,10 @@ public class OknoSlovnik extends javax.swing.JFrame {
             FileNameExtensionFilter myFilter = new FileNameExtensionFilter("CSV soubor", "csv");
             fc.setFileFilter(myFilter);
             /* Nastavení záhlaví CSV souboru */
-            String data = "id;cs;en\n";
+            String data = "id;cs;en;de\n";
             /* Výpis slovíček na samostatné řádky */
             for (int i = 0; i < tabulka.getRowCount(); i++) {
-                data += tabulka.getModel().getValueAt(i, 0).toString() + ";" + tabulka.getModel().getValueAt(i, 1).toString() + ";" + tabulka.getModel().getValueAt(i, 2).toString();
+                data += tabulka.getModel().getValueAt(i, 0).toString() + ";" + tabulka.getModel().getValueAt(i, 1).toString() + ";" + tabulka.getModel().getValueAt(i, 2).toString() + ";" + tabulka.getModel().getValueAt(i, 3).toString();
                 data += (i == tabulka.getRowCount() - 1) ? "" : "\n";
             }
             /* Uložení do souboru s kódováním Window-1250 */
@@ -640,6 +644,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
                 data += "\t{\"id\":\"" + tabulka.getModel().getValueAt(i, 0).toString() + "\",";
                 data += "\"cs\":\"" + tabulka.getModel().getValueAt(i, 1).toString() + "\",";
                 data += "\"en\":\"" + tabulka.getModel().getValueAt(i, 2).toString() + "\"}";
+                data += "\"de\":\"" + tabulka.getModel().getValueAt(i, 3).toString() + "\"}";
                 data += (i == tabulka.getRowCount() - 1) ? "\n" : ",\n";
             }
             data += "]}";
@@ -668,6 +673,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
                 data += "\t<slovo id=\"" + tabulka.getModel().getValueAt(i, 0).toString() + "\" >\n";
                 data += "\t\t<cs>" + tabulka.getModel().getValueAt(i, 1).toString() + "</cs>\n";
                 data += "\t\t<en>" + tabulka.getModel().getValueAt(i, 2).toString() + "</en>\n";
+                data += "\t\t<de>" + tabulka.getModel().getValueAt(i, 3).toString() + "</de>\n";
                 data += "\t</slovo>\n";
             }
             data += "</slovnik>";
@@ -680,6 +686,26 @@ public class OknoSlovnik extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Nastala chyba při ukládání souboru!", "Chyba!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_menuXMLActionPerformed
+
+    private void jazykActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jazykActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jazykActionPerformed
+
+    private void testActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testActionPerformed
+        /* zjištění id podle označeného řádku tabulky (z prvního sloupce - index 0) */
+        Random randomGenerator = new Random();
+        int rowCount = (int) tabulka.getModel().getRowCount();
+        int randomId = randomGenerator.nextInt(rowCount);
+        int id = randomId;
+        /* Zjistí slovíčka ve vyznačeném řádku tabulky a uloží je do pole */
+        String[] slova = {tabulka.getModel().getValueAt(id, 1).toString(), tabulka.getModel().getValueAt(id, 2).toString(), tabulka.getModel().getValueAt(id, 3).toString()};
+        /* Otevře dialogové okno a  prostřednictvím konstruktoru předá zvolená slova */
+        testDialog testDialog = new testDialog(this, true, slova);
+        /* Změní titulek dialogového okna */
+        testDialog.setTitle("Test");
+        /* Zobrazení dialogového okna metodou showDialog() */
+        testDialog.showDialog();
+    }//GEN-LAST:event_testActionPerformed
 
     /**
      * @param args the command line arguments
@@ -739,6 +765,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
     private javax.swing.JButton search;
     private javax.swing.JButton showAll;
     private javax.swing.JTable tabulka;
+    private javax.swing.JButton test;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }
