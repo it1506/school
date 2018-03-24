@@ -33,7 +33,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
     /* Atribut udržující připojení k databázi */
     private Connection spojeni;
     /* Atribut určený pro model tabulky */
-    private final DefaultTableModel model;
+    public final DefaultTableModel model;
 
     /**
      * Konstruktor třídy OknoSlovnik
@@ -692,13 +692,19 @@ public class OknoSlovnik extends javax.swing.JFrame {
     }//GEN-LAST:event_jazykActionPerformed
 
     private void testActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testActionPerformed
-        /* zjištění id podle označeného řádku tabulky (z prvního sloupce - index 0) */
         Random randomGenerator = new Random();
         int rowCount = (int) tabulka.getModel().getRowCount();
-        int randomId = randomGenerator.nextInt(rowCount);
-        int id = randomId;
-        /* Zjistí slovíčka ve vyznačeném řádku tabulky a uloží je do pole */
-        String[] slova = {tabulka.getModel().getValueAt(id, 1).toString(), tabulka.getModel().getValueAt(id, 2).toString(), tabulka.getModel().getValueAt(id, 3).toString()};
+        /* Vytvoří dvourozměrné pole pro zápis slov */
+        String[][] slova = new String[3][10];
+        /* Zapíše náhodná slova do pole */
+        for(int i = 0; i < 10; i++){
+            int randomId = randomGenerator.nextInt(rowCount);
+            int id = randomId;
+            slova[0][i] = tabulka.getModel().getValueAt(id, 1).toString();
+            slova[1][i] = tabulka.getModel().getValueAt(id, 2).toString();
+            slova[2][i] = tabulka.getModel().getValueAt(id, 3).toString();
+        }
+        
         /* Otevře dialogové okno a  prostřednictvím konstruktoru předá zvolená slova */
         testDialog testDialog = new testDialog(this, true, slova);
         /* Změní titulek dialogového okna */
@@ -707,6 +713,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
         testDialog.showDialog();
     }//GEN-LAST:event_testActionPerformed
 
+   
     /**
      * @param args the command line arguments
      */

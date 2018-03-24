@@ -5,6 +5,8 @@
  */
 package dictionary;
 
+import java.awt.Color;
+import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -15,18 +17,23 @@ public class testDialog extends javax.swing.JDialog {
     private String actionButton = "Storno";
     private String anglicky;
     private String nemecky;
+    private String[][] slovicka = new String[3][10];
+    private int index = 0;
     /**
-     * Creates new form slovaDialog
+     * Creates new form testDialog
      * @param parent
      * @param modal
      * @param slova
      */
-    public testDialog(java.awt.Frame parent, boolean modal, String[] slova) {
+    public testDialog(java.awt.Frame parent, boolean modal, String[][] slova) {
         super(parent, modal);
         initComponents();
-        this.csText.setText(slova[0]);
-        this.anglicky = slova[1];
-        this.nemecky = slova[2];
+        for(int i = 0; i < 10; i++){
+            for(int z = 0; z < 3; z++){
+                this.slovicka[z][i] = slova[z][i];
+            }
+        }
+        changeWord();
     }
 
     /**
@@ -34,9 +41,7 @@ public class testDialog extends javax.swing.JDialog {
      * @return
      */
     public String showDialog() {
-        /* Zviditelní dialogové okno */
         this.setVisible(true);
-        /* Vrací název stisnutého tlačítka */
         return actionButton; 
     }
     
@@ -60,12 +65,17 @@ public class testDialog extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        okButton = new javax.swing.JButton();
         enText = new javax.swing.JTextField();
-        storno = new javax.swing.JButton();
+        stornoButton = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         deText = new javax.swing.JTextField();
         csText = new javax.swing.JLabel();
+        panel = new javax.swing.JPanel();
+        resultText = new javax.swing.JLabel();
+        nextButton = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        pocet = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -73,18 +83,11 @@ public class testDialog extends javax.swing.JDialog {
 
         jLabel2.setText("anglicky");
 
-        okButton.setText("Vyhodnotit");
-        okButton.addActionListener(new java.awt.event.ActionListener() {
+        stornoButton.setText("Storno");
+        stornoButton.setToolTipText("");
+        stornoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                okButtonActionPerformed(evt);
-            }
-        });
-
-        storno.setText("Storno");
-        storno.setToolTipText("");
-        storno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stornoActionPerformed(evt);
+                stornoButtonActionPerformed(evt);
             }
         });
 
@@ -98,33 +101,87 @@ public class testDialog extends javax.swing.JDialog {
 
         csText.setText(" ");
 
+        resultText.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        resultText.setForeground(new java.awt.Color(255, 255, 255));
+        resultText.setText(" ");
+
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                    .addContainerGap(117, Short.MAX_VALUE)
+                    .addComponent(resultText, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(115, Short.MAX_VALUE)))
+        );
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 54, Short.MAX_VALUE)
+            .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLayout.createSequentialGroup()
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(resultText)
+                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        nextButton.setText("Dále");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel4.setText("Slovo");
+
+        pocet.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        pocet.setText(" ");
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel6.setText("z   10");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(okButton)
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(nextButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(storno))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))
-                        .addGap(77, 77, 77)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(enText, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
-                            .addComponent(deText)
-                            .addComponent(csText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(38, Short.MAX_VALUE))
+                        .addComponent(stornoButton))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3))
+                            .addGap(77, 77, 77)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(enText, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE)
+                                .addComponent(csText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(deText)))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(pocet)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel6))))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(pocet)
+                    .addComponent(jLabel6))
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(csText))
@@ -136,35 +193,55 @@ public class testDialog extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(deText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(okButton)
-                    .addComponent(storno))
+                    .addComponent(stornoButton)
+                    .addComponent(nextButton))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-       actionButton = "OK";
-       if(this.enText.getText().equals(anglicky) && this.deText.getText().equals(nemecky)){
-           JOptionPane.showMessageDialog(this, "Správně!", "   :)", JOptionPane.PLAIN_MESSAGE);
-        }else{
-           JOptionPane.showMessageDialog(this, "Špatně...", "   :(", JOptionPane.PLAIN_MESSAGE);
-       }
-       this.dispose();
-    }//GEN-LAST:event_okButtonActionPerformed
-
-    private void stornoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stornoActionPerformed
+    private void stornoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stornoButtonActionPerformed
        actionButton = "Storno";
        this.dispose();
-    }//GEN-LAST:event_stornoActionPerformed
+    }//GEN-LAST:event_stornoButtonActionPerformed
 
     private void deTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_deTextActionPerformed
 
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        if(this.resultText.getText().equals(" ")){
+            if(this.enText.getText().equals(anglicky) && this.deText.getText().equals(nemecky)){
+                this.resultText.setText("Správně!");
+                this.panel.setBackground(Color.green);
+             }else{
+                this.resultText.setText("Špatně...");
+                this.panel.setBackground(Color.red);
+            }
+        }else if(this.index > 8){
+            this.dispose();
+        }else{
+            this.index++; 
+            changeWord();
+        }
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void changeWord(){
+        this.pocet.setText(String.valueOf(index+1));
+        this.csText.setText(this.slovicka[0][index]);
+        this.enText.setText("");
+        this.deText.setText("");
+        this.anglicky = this.slovicka[1][index];
+        this.nemecky = this.slovicka[2][index];
+        this.resultText.setText(" ");
+        this.panel.setBackground(Color.white);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -176,7 +253,12 @@ public class testDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JButton okButton;
-    private javax.swing.JButton storno;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JPanel panel;
+    private javax.swing.JLabel pocet;
+    private javax.swing.JLabel resultText;
+    private javax.swing.JButton stornoButton;
     // End of variables declaration//GEN-END:variables
 }
