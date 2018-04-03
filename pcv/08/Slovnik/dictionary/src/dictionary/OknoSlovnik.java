@@ -34,7 +34,9 @@ public class OknoSlovnik extends javax.swing.JFrame {
     private Connection spojeni;
     /* Atribut určený pro model tabulky */
     public final DefaultTableModel model;
-
+    
+    
+    private int[] numbers = new int[10];
     /**
      * Konstruktor třídy OknoSlovnik
      */
@@ -193,6 +195,7 @@ public class OknoSlovnik extends javax.swing.JFrame {
         }
         return numRows;
     }
+   
 
     /* Metoda zajistí aktualizaci vybraného záznamu (podle id) */
     private int updateRecord(int id, String enWord, String csWord, String deWord) {
@@ -260,9 +263,9 @@ public class OknoSlovnik extends javax.swing.JFrame {
         jazyk = new javax.swing.JComboBox();
         findText = new javax.swing.JTextField();
         showAll = new javax.swing.JButton();
-        test = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         pocetZaznamu = new javax.swing.JLabel();
+        test = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuExport = new javax.swing.JMenu();
@@ -390,6 +393,13 @@ public class OknoSlovnik extends javax.swing.JFrame {
         });
         jToolBar1.add(showAll);
 
+        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        pocetZaznamu.setText("Počet záznamů:");
+
+        test.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         test.setText("Test");
         test.setFocusable(false);
         test.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -399,13 +409,6 @@ public class OknoSlovnik extends javax.swing.JFrame {
                 testActionPerformed(evt);
             }
         });
-        jToolBar1.add(test);
-
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-
-        pocetZaznamu.setText("Počet záznamů:");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -414,13 +417,17 @@ public class OknoSlovnik extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pocetZaznamu)
-                .addContainerGap(440, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
+                .addComponent(test, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pocetZaznamu)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(test, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(pocetZaznamu))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -699,10 +706,16 @@ public class OknoSlovnik extends javax.swing.JFrame {
         /* Zapíše náhodná slova do pole */
         for(int i = 0; i < 10; i++){
             int randomId = randomGenerator.nextInt(rowCount);
-            int id = randomId;
-            slova[0][i] = tabulka.getModel().getValueAt(id, 1).toString();
-            slova[1][i] = tabulka.getModel().getValueAt(id, 2).toString();
-            slova[2][i] = tabulka.getModel().getValueAt(id, 3).toString();
+            
+            if(checkNumbers(randomId)){
+                int id = randomId;
+                numbers[i] = randomId;
+                slova[0][i] = tabulka.getModel().getValueAt(id, 1).toString();
+                slova[1][i] = tabulka.getModel().getValueAt(id, 2).toString();
+                slova[2][i] = tabulka.getModel().getValueAt(id, 3).toString();
+            }else{
+                i--;
+            }
         }
         
         /* Otevře dialogové okno a  prostřednictvím konstruktoru předá zvolená slova */
@@ -710,9 +723,30 @@ public class OknoSlovnik extends javax.swing.JFrame {
         /* Změní titulek dialogového okna */
         testDialog.setTitle("Test");
         /* Zobrazení dialogového okna metodou showDialog() */
-        testDialog.showDialog();
+        /* odeslání do databaze
+        if(testDialog.showDialog().equals("ok")){
+            try {
+                PreparedStatement dotaz = spojeni.prepareStatement("INSERT INTO vysledky (jmeno, spravne, datum) VALUES (?, ?, ?)");
+                dotaz.setString(1, testDialog.);
+                dotaz.setString(2, Integer.toString(testDialog.getScore()));
+                dotaz.setString(3, body);
+                dotaz.executeUpdate();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Chyba při komunikaci s databází", "Chyba", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        */
     }//GEN-LAST:event_testActionPerformed
-
+    
+    /* Tato metoda zajistí aby se v testu neopakovala slovíčka */
+    private boolean checkNumbers(int randomId){
+        for(int i = 0; i < 10; i++){
+            if(randomId == numbers[i]){
+                return false;
+            }
+        }
+        return true;
+    }
    
     /**
      * @param args the command line arguments

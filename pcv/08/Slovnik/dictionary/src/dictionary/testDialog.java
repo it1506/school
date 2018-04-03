@@ -19,6 +19,7 @@ public class testDialog extends javax.swing.JDialog {
     private String nemecky;
     private String[][] slovicka = new String[3][10];
     private int index = 0;
+    private int score = 0;
     /**
      * Creates new form testDialog
      * @param parent
@@ -51,6 +52,10 @@ public class testDialog extends javax.swing.JDialog {
     
     public String getNemecky() {
         return this.deText.getText();
+    }
+    
+    public int getScore(){
+        return this.score;
     }
     
     
@@ -219,11 +224,13 @@ public class testDialog extends javax.swing.JDialog {
             if(this.enText.getText().equals(anglicky) && this.deText.getText().equals(nemecky)){
                 this.resultText.setText("Správně!");
                 this.panel.setBackground(Color.green);
+                this.score++;
              }else{
                 this.resultText.setText("Špatně...");
                 this.panel.setBackground(Color.red);
             }
         }else if(this.index > 8){
+            actionButton = "ok";
             this.dispose();
         }else{
             this.index++; 
