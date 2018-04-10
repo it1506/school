@@ -723,19 +723,9 @@ public class OknoSlovnik extends javax.swing.JFrame {
         /* Změní titulek dialogového okna */
         testDialog.setTitle("Test");
         /* Zobrazení dialogového okna metodou showDialog() */
-        /* odeslání do databaze
-        if(testDialog.showDialog().equals("ok")){
-            try {
-                PreparedStatement dotaz = spojeni.prepareStatement("INSERT INTO vysledky (jmeno, spravne, datum) VALUES (?, ?, ?)");
-                dotaz.setString(1, testDialog.);
-                dotaz.setString(2, Integer.toString(testDialog.getScore()));
-                dotaz.setString(3, body);
-                dotaz.executeUpdate();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(this, "Chyba při komunikaci s databází", "Chyba", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-        */
+        
+        testDialog.showDialog();
+            
     }//GEN-LAST:event_testActionPerformed
     
     /* Tato metoda zajistí aby se v testu neopakovala slovíčka */
